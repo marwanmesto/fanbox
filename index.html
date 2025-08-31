@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footy Surprise Boxes | Football Merchandise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3B82F6;
+            --secondary: #10B981;
+            --accent: #F59E0B;
+            --dark: #1F2937;
+            --light: #F3F4F6;
+            --barca: #A50044;
+            --real: #00529F;
+            --bayern: #DC052D;
+            --manu: #DA291C;
+            --manc: #6CABDD;
+            --liverpool: #C8102E;
+            --arsenal: #EF0107;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', 'Tahoma', sans-serif;
+        }
+
+        .rtl {
+            direction: rtl;
+        }
+        
+        .flip-card {
+            perspective: 1000px;
+        }
+        
+        .flip-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .flip-card:hover .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flip-card-front, .flip-card-back {
+            backface-visibility: hidden;
+        }
+        
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+        
+        .club-logo {
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.3));
+            transition: all 0.3s ease;
+        }
+        
+        .club-logo:hover {
+            transform: scale(1.1);
+        }
+        
+        .language-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+        }
+        
+        .language-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #3b82f6;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "EN";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            color: #3b82f6;
+        }
+        
+        input:checked + .slider {
+            background-color: #10b981;
+        }
+        
+        input:checked + .slider:before {
+            content: "AR";
+            transform: translateX(30px);
+            color: #10b981;
+        }
+        
+        .whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 40px;
+            right: 40px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .whatsapp-float:hover {
+            background-color: #128C7E;
+        }
+        
+        .order-form {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        }
+        
+        .box-option {
+            transition: all 0.3s ease;
+        }
+        
+        .box-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .box-option.selected {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+        
+        .player-option {
+            transition: all 0.2s ease;
+        }
+        
+        .player-option:hover {
+            transform: scale(1.05);
+        }
+        
+        .player-option.selected {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+        }
+
+        /* Customizer Styles */
+        .customizer {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+        }
+
+        .customizer-step {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .option-card {
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option-card:hover {
+            border-color: var(--primary);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary);
+            background-color: #eff6ff;
+        }
+
+        .option-image {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-image img {
+            max-width: 100%;
+            max-height: 70px;
+        }
+
+        .option-name {
+            font-weight: 600;
+        }
+
+        .price-summary {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            margin-top: 2rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #d1d5db;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .shirt-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .shirt-option {
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .shirt-option:hover {
+            border-color: var(--primary);
+        }
+
+        .shirt-option.selected {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px var(--primary);
+        }
+
+        .shirt-image {
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f1f5f9;
+        }
+
+        .shirt-image img {
+            max-width: 100%;
+            max-height: 140px;
+        }
+
+        .shirt-name {
+            padding: 0.5rem;
+            text-align: center;
+            background: white;
+            font-weight: 600;
+        }
+
+        .club-card {
+            background: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .club-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .clubs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .box-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .box-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--accent);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 0.5rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .box-header {
+            padding: 1.5rem;
+            text-align: center;
+            background: var(--light);
+        }
+
+        .box-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .box-price {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .box-content {
+            padding: 1.5rem;
+        }
+
+        .box-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .box-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+        }
+
+        .box-features li:before {
+            content: "✓";
+            color: var(--secondary);
+            margin-left: 0.5rem;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content {
+                padding-top: 2rem;
+                padding-bottom: 2rem;
+            }
+            
+            .club-logos {
+                justify-content: center;
+            }
+            
+            .clubs-grid, .box-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .options-grid {
+                grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            }
+            
+            .shirt-options {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/96181519094" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Header -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <img src="https://cdn-icons-png.flaticon.com/512/53/53283.png" alt="Logo" class="h-10 mr-3">
+                <h1 class="text-xl font-bold text-blue-600">Footy Surprise Boxes</h1>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#home" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-i18n="home">Home</a>
+                    <a href="#about" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-i18n="about">About</a>
+                    <a href="#clubs" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-i18n="clubs">Clubs</a>
+                    <a href="#shop" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-i18n="shop">Shop</a>
+                    <a href="#contact" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-i18n="contact">Contact</a>
+                </nav>
+                
+                <label class="language-switch">
+                    <input type="checkbox" id="languageToggle">
+                    <span class="slider"></span>
+                </label>
+                
+                <button class="md:hidden text-gray-700" id="mobileMenuButton">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden bg-white py-2 px-4 shadow-md" id="mobileMenu">
+            <div class="flex flex-col space-y-3">
+                <a href="#home" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-i18n="home">Home</a>
+                <a href="#about" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-i18n="about">About</a>
+                <a href="#clubs" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-i18n="clubs">Clubs</a>
+                <a href="#shop" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-i18n="shop">Shop</a>
+                <a href="#contact" class="nav-link text-gray-700 hover:text-blue-600 font-medium" data-i18n="contact">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative bg-gradient-to-r from-blue-500 to-green-500 text-white py-16 md:py-24">
+        <div class="container mx-auto px-4 hero-content">
+            <div class="max-w-3xl">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4" data-i18n="heroTitle">Discover Your Football Surprise Box</h1>
+                <p class="text-xl mb-8" data-i18n="heroSubtitle">Get official merchandise from top football clubs delivered to your doorstep in Lebanon!</p>
+                <a href="#clubs" class="bg-white text-blue-600 hover:bg-gray-100 font-bold py-3 px-8 rounded-full text-lg transition duration-300 inline-block" data-i18n="orderNow">Order Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Clubs -->
+    <section id="clubs" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12" data-i18n="featuredClubs">Featured Clubs</h2>
+            <div class="clubs-grid">
+                <!-- Barcelona -->
+                <div class="club-card" data-club="barcelona">
+                    <div class="club-logo" style="background-color: var(--barca);">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg" alt="Barcelona" class="h-24 w-24 p-6 object-contain">
+                    </div>
+                    <div class="club-name" data-i18n="barcelona">Barcelona</div>
+                </div>
+                
+                <!-- Real Madrid -->
+                <div class="club-card" data-club="real-madrid">
+                    <div class="club-logo" style="background-color: var(--real);">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/06/Real-Madrid-Logo.png" alt="Real Madrid" class="h-24 w-24 p-1 object-contain">
+                    </div>
+                    <div class="club-name" data-i18n="realMadrid">Real Madrid</div>
+                </div>
+                
+                <!-- Bayern Munich -->
+                <div class="club-card" data-club="bayern">
+                    <div class="club-logo" style="background-color: var(--bayern);">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/1/1b/FC_Bayern_M%C3%BCnchen_logo_%282017%29.svg" alt="Bayern Munich" class="h-24 w-24 p-6 object-contain">
+                    </div>
+                    <div class="club-name" data-i18n="bayernMunich">Bayern Munich</div>
+                </div>
+                
+                <!-- Manchester United -->
+                <div class="club-card" data-club="man-utd">
+                    <div class="club-logo" style="background-color: var(--manu);">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg" alt="Manchester United" class="h-24 w-24 p-6 object-contain">
+                    </div>
+                    <div class="club-name" data-i18n="manUtd">Man United</div>
+                </div>
+                
+                <!-- Manchester City -->
+                <div class="club-card" data-club="man-city">
+                    <div class="club-logo" style="background-color: var(--manc);">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/06/Manchester-City-Logo.png" alt="Manchester City" class="h-24 w-24 p-2 object-contain">
+                    </div>
+                    <div class="club-name" data-i18n="manCity">Man City</div>
+                </div>
+                
+                <!-- Liverpool -->
+                <div class="club-card" data-club="liverpool">
+                    <div class="club-logo" style="background-color: var(--liverpool);">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/06/Liverpool-Logo.png" alt="Liverpool" class="h-24 w-24 p-1 object-contain">
+                    </div>
+                    <div class="club-name" data-i18n="liverpool">Liverpool</div>
+                </div>
+                
+                <!-- Arsenal -->
+                <div class="club-card" data-club="arsenal">
+                    <div class="club-logo" style="background-color: var(--arsenal);">
+                        <img src="https://logos-world.net/wp-content/uploads/2020/05/Arsenal-Logo.png" alt="Arsenal" class="h-24 w-24 p-2 object-contain">
+                    </div>
+                    <div class="club-name" data-i18n="arsenal">Arsenal</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8">
+                    <img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="About Us" class="rounded-lg shadow-xl w-full h-96 object-cover">
+                </div>
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold mb-6" data-i18n="aboutTitle">About Footy Surprise Boxes</h2>
+                    <p class="text-gray-700 mb-4" data-i18n="aboutText1">
+                        We are passionate football fans who want to bring the excitement of top European clubs to fans in Lebanon. Our surprise boxes contain high-quality merchandise that will delight any football enthusiast.
+                    </p>
+                    <p class="text-gray-700 mb-4" data-i18n="aboutText2">
+                        Each box is carefully curated to include high-quality items from your favorite clubs. Whether you're treating yourself or looking for the perfect gift, our surprise boxes deliver the thrill of football right to your doorstep.
+                    </p>
+                    <div class="mt-6">
+                        <div class="flex items-center mb-3">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                <i class="fas fa-check-circle text-blue-600"></i>
+                            </div>
+                            <span data-i18n="aboutFeature1">High quality club merchandise</span>
+                        </div>
+                        <div class="flex items-center mb-3">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                <i class="fas fa-check-circle text-blue-600"></i>
+                            </div>
+                            <span data-i18n="aboutFeature2">Fast delivery across Lebanon</span>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-2 rounded-full mr-3">
+                                <i class="fas fa-check-circle text-blue-600"></i>
+                            </div>
+                            <span data-i18n="aboutFeature3">Cash on delivery available</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section id="shop" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-4" data-i18n="shopTitle">Choose Your Surprise Box</h2>
+            <p class="text-gray-600 text-center max-w-2xl mx-auto mb-12" data-i18n="shopSubtitle">Select from our three box sizes, each packed with exciting football merchandise from your favorite club.</p>
+            
+            <!-- Box Options -->
+            <div class="box-options">
+                <!-- Small Box -->
+                <div class="box-option">
+                    <div class="box-header">
+                        <h3 class="box-title" data-i18n="smallBox">Small Box</h3>
+                        <div class="box-price">$20</div>
+                    </div>
+                    <div class="box-content">
+                        <ul class="box-features">
+                            <li data-i18n="smallBoxItem1">Official club kit</li>
+                            <li data-i18n="smallBoxItem2">Club keychain</li>
+                        </ul>
+                        <button class="btn" data-box="small" data-i18n="selectBox">Select</button>
+                    </div>
+                </div>
+                
+                <!-- Medium Box -->
+                <div class="box-option">
+                    <div class="box-badge" data-i18n="mostPopular">Most Popular</div>
+                    <div class="box-header">
+                        <h3 class="box-title" data-i18n="mediumBox">Medium Box</h3>
+                        <div class="box-price">$40</div>
+                    </div>
+                    <div class="box-content">
+                        <ul class="box-features">
+                            <li data-i18n="mediumBoxItem1">Official club kit</li>
+                            <li data-i18n="mediumBoxItem2">Club keychain</li>
+                            <li data-i18n="mediumBoxItem3">Player poster (your choice)</li>
+                        </ul>
+                        <button class="btn" data-box="medium" data-i18n="selectBox">Select</button>
+                    </div>
+                </div>
+                
+                <!-- Big Box -->
+                <div class="box-option">
+                    <div class="box-badge" data-i18n="bestValue">Best Value</div>
+                    <div class="box-header">
+                        <h3 class="box-title" data-i18n="bigBox">Big Box</h3>
+                        <div class="box-price">$50</div>
+                    </div>
+                    <div class="box-content">
+                        <ul class="box-features">
+                            <li data-i18n="bigBoxItem1">Official club kit</li>
+                            <li data-i18n="bigBoxItem2">Club keychain</li>
+                            <li data-i18n="bigBoxItem3">Player poster (your choice)</li>
+                            <li data-i18n="bigBoxItem4">Official club ball</li>
+                            <li data-i18n="bigBoxItem5">Club scarf</li>
+                        </ul>
+                        <button class="btn" data-box="big" data-i18n="selectBox">Select</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Customizer Section -->
+            <div id="customizer" class="customizer" style="display: none;">
+                <h2 class="section-title" data-i18n="customizeBox">Customize Your Box</h2>
+                
+                <div class="customizer-step">
+                    <h3 class="step-title" data-i18n="selectShirt">Select Shirt Design</h3>
+                    <div class="shirt-options" id="shirt-container">
+                        <!-- Will be populated based on selected club -->
+                    </div>
+                </div>
+                
+                <div class="customizer-step">
+                    <h3 class="step-title" data-i18n="selectSize">Select Shirt Size</h3>
+                    <div class="options-grid">
+                        <div class="option-card selected" data-size="S">
+                            <div class="option-name">S</div>
+                        </div>
+                        <div class="option-card" data-size="M">
+                            <div class="option-name">M</div>
+                        </div>
+                        <div class="option-card" data-size="L">
+                            <div class="option-name">L</div>
+                        </div>
+                        <div class="option-card" data-size="XL">
+                            <div class="option-name">XL</div>
+                        </div>
+                        <div class="option-card" data-size="XXL">
+                            <div class="option-name">XXL</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="customizer-step" id="player-step">
+                    <h3 class="step-title" data-i18n="selectPlayer">Select Your Favorite Player</h3>
+                    <div class="options-grid" id="players-container">
+                        <!-- Will be populated based on selected club -->
+                    </div>
+                </div>
+                
+                <div class="customizer-step" id="ball-step">
+                    <h3 class="step-title" data-i18n="selectBall">Official Club Ball</h3>
+                    <div class="options-grid">
+                        <div class="option-card selected" data-ball="official">
+                            <div class="option-image">
+                                <img src="football.jfif" alt="Official Ball" data-i18n="officialBall">
+                            </div>
+                            <div class="option-name" data-i18n="includedInBox">Included in Box</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="customizer-step" id="scarf-step">
+                    <h3 class="step-title" data-i18n="clubScarf">Club Scarf</h3>
+                    <div class="options-grid">
+                        <div class="option-card selected" data-scarf="yes">
+                            <div class="option-image">
+                                <img src="scarft.jfif" alt="Club Scarf">
+                            </div>
+                            <div class="option-name" data-i18n="includedInBox">Included in Box</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="price-summary">
+                    <h3 class="step-title" data-i18n="orderSummary">Order Summary</h3>
+                    <div class="summary-item">
+                        <span data-i18n="basePrice">Base Price:</span>
+                        <span id="base-price">$0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span data-i18n="vat">VAT:</span>
+                        <span>$0</span>
+                    </div>
+                    <div class="summary-total">
+                        <span data-i18n="total">Total:</span>
+                        <span id="total-price">$0</span>
+                    </div>
+                    <button class="btn" style="width: 100%; margin-top: 1rem;" id="proceed-to-order" data-i18n="proceedToOrder">Proceed to Order</button>
+                </div>
+            </div>
+            
+            <!-- Order Form -->
+            <div class="order-form max-w-4xl mx-auto p-8 rounded-xl shadow-md" id="orderFormContainer" style="display: none;">
+                <h3 class="text-2xl font-bold mb-6 text-center" data-i18n="orderFormTitle">Complete Your Order</h3>
+                
+                <form id="orderForm" class="space-y-6">
+                    <!-- Selected Box (hidden field) -->
+                    <input type="hidden" id="selectedBox" name="boxType" value="">
+                    <input type="hidden" id="selectedClub" name="club" value="">
+                    <input type="hidden" id="selectedShirt" name="shirt" value="">
+                    <input type="hidden" id="selectedSize" name="size" value="">
+                    <input type="hidden" id="selectedPlayer" name="player" value="">
+                    
+                    <!-- Customer Details -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2" for="name" data-i18n="fullName">Full Name</label>
+                            <input type="text" id="name" name="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2" for="phone" data-i18n="phoneNumber">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2" for="address" data-i18n="deliveryAddress">Delivery Address</label>
+                        <textarea id="address" name="address" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required></textarea>
+                    </div>
+                    
+                    <!-- Payment Method -->
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2" data-i18n="paymentMethod">Payment Method</label>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <div class="flex items-center">
+                                <input type="radio" id="cod" name="payment" value="Cash on Delivery" checked class="h-4 w-4 text-blue-600 focus:ring-blue-500">
+                                <label for="cod" class="ml-2 font-medium" data-i18n="cashOnDelivery">Cash on Delivery</label>
+                            </div>
+                            <p class="text-gray-600 mt-2 text-sm" data-i18n="codNote">Pay when you receive your order. Currently only available in Lebanon.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <div class="pt-4">
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300" data-i18n="placeOrder">
+                            Place Order
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12" data-i18n="customerReviews">What Our Customers Say</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 text-blue-600 rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl">A</div>
+                        <div class="ml-4">
+                            <h4 class="font-bold">Ahmed</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600" data-i18n="testimonial1">"The Real Madrid box exceeded my expectations! The quality of the items is amazing. Will definitely order again."</p>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 text-green-600 rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl">L</div>
+                        <div class="ml-4">
+                            <h4 class="font-bold">Layla</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600" data-i18n="testimonial2">"Got the Barcelona box as a gift for my brother. He loved the Messi poster! Delivery was fast too."</p>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 text-purple-600 rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl">M</div>
+                        <div class="ml-4">
+                            <h4 class="font-bold">Mohammed</h4>
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600" data-i18n="testimonial3">"The Manchester United big box is worth every penny. The scarf is my favorite item. Highly recommended!"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-3xl font-bold text-center mb-12" data-i18n="contactUs">Contact Us</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4" data-i18n="getInTouch">Get in Touch</h3>
+                        <p class="text-gray-600 mb-6" data-i18n="contactText">Have questions about our products or need help with your order? Reach out to us and we'll get back to you as soon as possible.</p>
+                        
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-envelope text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold" data-i18n="emailUs">Email Us</h4>
+                                    <a href="mailto:info@footysurprise.com" class="text-blue-600 hover:underline">info@footysurprise.com</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-green-100 p-3 rounded-full mr-4">
+                                    <i class="fab fa-whatsapp text-green-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold" data-i18n="whatsappUs">WhatsApp Us</h4>
+                                    <a href="https://wa.me/96181519094" target="_blank" class="text-blue-600 hover:underline">+961 81 519 094</a>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start">
+                                <div class="bg-purple-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-map-marker-alt text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold" data-i18n="location">Location</h4>
+                                    <p class="text-gray-600" data-i18n="lebanon">Tripoli, Lebanon</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-xl font-bold mb-4" data-i18n="sendMessage">Send Us a Message</h3>
+                        <form class="space-y-4">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2" for="contactName" data-i18n="yourName">Your Name</label>
+                                <input type="text" id="contactName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2" for="contactEmail" data-i18n="yourEmail">Your Email</label>
+                                <input type="email" id="contactEmail" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2" for="contactMessage" data-i18n="yourMessage">Your Message</label>
+                                <textarea id="contactMessage" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                            </div>
+                            
+                            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300 w-full" data-i18n="sendMessageBtn">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Footy Surprise Boxes</h3>
+                    <p class="text-gray-400" data-i18n="footerAbout">Bringing the excitement of European football to fans in Lebanon through curated surprise boxes.</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4" data-i18n="quickLinks">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-white transition duration-300 nav-link" data-i18n="home">Home</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-white transition duration-300 nav-link" data-i18n="about">About</a></li>
+                        <li><a href="#clubs" class="text-gray-400 hover:text-white transition duration-300 nav-link" data-i18n="clubs">Clubs</a></li>
+                        <li><a href="#shop" class="text-gray-400 hover:text-white transition duration-300 nav-link" data-i18n="shop">Shop</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white transition duration-300 nav-link" data-i18n="contact">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4" data-i18n="clubs">Clubs</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300" data-i18n="realMadrid">Real Madrid</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300" data-i18n="barcelona">Barcelona</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300" data-i18n="bayernMunich">Bayern Munich</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300" data-i18n="manUtd">Man United</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300" data-i18n="manCity">Man City</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300" data-i18n="liverpool">Liverpool</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition duration-300" data-i18n="arsenal">Arsenal</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4" data-i18n="connectWithUs">Connect With Us</h4>
+                    <div class="flex space-x-4 mb-4">
+                        <a href="#" class="bg-gray-700 hover:bg-blue-600 w-10 h-10 rounded-full flex items-center justify-center transition duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="bg-gray-700 hover:bg-pink-600 w-10 h-10 rounded-full flex items-center justify-center transition duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://wa.me/96181519094" target="_blank" class="bg-gray-700 hover:bg-green-500 w-10 h-10 rounded-full flex items-center justify-center transition duration-300">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p data-i18n="copyright">&copy; 2023 Footy Surprise Boxes. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-8 max-w-md mx-4">
+            <div class="text-center">
+                <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-check text-green-600 text-2xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2" data-i18n="orderSuccess">Order Successful!</h3>
+                <p class="text-gray-600 mb-6" data-i18n="orderSuccessText">Thank you for your order. We'll contact you soon to confirm the details.</p>
+                <button id="closeModal" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-full transition duration-300" data-i18n="close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Language toggle functionality
+        const languageToggle = document.getElementById('languageToggle');
+        const elementsToTranslate = document.querySelectorAll('[data-i18n]');
+        
+        // Check for saved language preference
+        const savedLanguage = localStorage.getItem('languagePreference');
+        if (savedLanguage === 'ar') {
+            document.documentElement.dir = 'rtl';
+            document.documentElement.lang = 'ar';
+            document.documentElement.classList.add('rtl');
+            languageToggle.checked = true;
+            translateToArabic();
+        }
+        
+        languageToggle.addEventListener('change', function() {
+            if (this.checked) {
+                document.documentElement.dir = 'rtl';
+                document.documentElement.lang = 'ar';
+                document.documentElement.classList.add('rtl');
+                localStorage.setItem('languagePreference', 'ar');
+                translateToArabic();
+            } else {
+                document.documentElement.dir = 'ltr';
+                document.documentElement.lang = 'en';
+                document.documentElement.classList.remove('rtl');
+                localStorage.setItem('languagePreference', 'en');
+                translateToEnglish();
+            }
+        });
+        
+        function translateToArabic() {
+            const translations = {
+                "home": "الصفحة الرئيسية",
+                "about": "من نحن",
+                "clubs": "الأندية", 
+                "shop": "المتجر", 
+                "contact": "اتصل بنا",
+                "heroTitle": "اكتشف صندوق المفاجآت الكروي الخاص بك",
+                "heroSubtitle": "احصل على منتجات رسمية من أفضل الأندية الكروية موصلة إلى باب منزلك في لبنان!",
+                "orderNow": "اطلب الآن",
+                "featuredClubs": "الأندية المتوفرة",
+                "realMadrid": "ريال مدريد",
+                "barcelona": "برشلونة",
+                "bayernMunich": "بايرن ميونخ",
+                "manUtd": "مانشستر يونايتد",
+                "manCity": "مانشستر سيتي",
+                "liverpool": "ليفربول",
+                "arsenal": "آرسنال",
+                "aboutTitle": "من نحن - صناديق المفاجآت الكروية",
+                "aboutText1": "نحن عشاق كرة قدم متحمسون نريد إثارة الأندية الأوروبية الكبرى للجماهير في لبنان. تحتوي صناديق المفاجآت الخاصة بنا على منتجات عالية الجودة سوف تسعد أي محب لكرة القدم.",
+                "aboutText2": "تم اختيار كل صندوق بعناية ليشمل عناصر عالية الجودة من أنديتك المفضلة. سواء كنت تهدي نفسك أو تبحث عن الهدية المثالية، فإن صناديق المفاجآت الخاصة بنا توفر متعة كرة القدم مباشرة إلى عتبة دارك.",
+                "aboutFeature1": "منتجات نادي عالية الجودة",
+                "aboutFeature2": "توصيل سريع في جميع أنحاء لبنان",
+                "aboutFeature3": "الدفع عند الاستلام متاح",
+                "shopTitle": "اختر صندوق المفاجآت الخاص بك",
+                "shopSubtitle": "اختر من بين أحجام الصناديق الثلاثة لدينا، كل منها مليء بمنتجات كرة القدم المثيرة من ناديك المفضل.",
+                "smallBox": "الصندوق الصغير",
+                "mediumBox": "الصندوق المتوسط",
+                "bigBox": "الصندوق الكبير",
+                "smallBoxItem1": "زي النادي الرسمي",
+                "smallBoxItem2": "سلسلة مفاتيح النادي",
+                "mediumBoxItem1": "زي النادي الرسمي",
+                "mediumBoxItem2": "سلسلة مفاتيح النادي",
+                "mediumBoxItem3": "ملصق اللاعب (اختيارك)",
+                "bigBoxItem1": "زي النادي الرسمي",
+                "bigBoxItem2": "سلسلة مفاتيح النادي",
+                "bigBoxItem3": "ملصق اللاعب (اختيارك)",
+                "bigBoxItem4": "كرة النادي الرسمية",
+                "bigBoxItem5": "وشاح النادي",
+                "selectBox": "اختر",
+                "mostPopular": "الأكثر شعبية",
+                "bestValue": "أفضل قيمة",
+                "customizeBox": "صمم بوكسك الخاص",
+                "selectShirt": "اختر تصميم التيشرت",
+                "selectSize": "اختر مقاس التيشرت",
+                "selectPlayer": "اختر لاعبك المفضل",
+                "selectBall": "كرة القدم الرسمية",
+                "clubScarf": "وشاح النادي",
+                "officialBall": "كرة القدم الرسمية",
+                "includedInBox": "متضمن مع البوكس",
+                "orderSummary": "ملخص الطلب",
+                "basePrice": "سعر البوكس الأساسي:",
+                "vat": "ضريبة القيمة المضافة:",
+                "total": "المجموع:",
+                "proceedToOrder": "المتابعة إلى الطلب",
+                "orderFormTitle": "أكمل طلبك",
+                "fullName": "الاسم الكامل",
+                "phoneNumber": "رقم الهاتف",
+                "deliveryAddress": "عنوان التوصيل",
+                "paymentMethod": "طريقة الدفع",
+                "cashOnDelivery": "الدفع عند الاستلام",
+                "codNote": "ادفع عند استلام طلبك. متاح حاليًا فقط في لبنان.",
+                "placeOrder": "تقديم الطلب",
+                "customerReviews": "ما يقوله عملاؤنا",
+                "testimonial1": "تجاوز صندوق ريال مدريد توقعاتي! جودة العناصر مذهلة. بالتأكيد سأطلب مرة أخرى.",
+                "testimonial2": "حصلت على صندوق برشلونة كهدية لأخي. لقد أحب ملصق ميسي! كان التسليم سريعًا أيضًا.",
+                "testimonial3": "الصندوق الكبير لمانشستر يونايتد يستحق كل فلس. الوشاح هو العنصر المفضل لدي. موصى به للغاية!",
+                "contactUs": "اتصل بنا",
+                "getInTouch": "تواصل معنا",
+                "contactText": "هل لديك أسئلة حول منتجاتنا أو تحتاج إلى مساعدة في طلبك؟ تواصل معنا وسنعاود الاتصال بك في أقرب وقت ممكن.",
+                "emailUs": "راسلنا عبر البريد الإلكتروني",
+                "whatsappUs": "راسلنا على واتساب",
+                "location": "الموقع",
+                "lebanon": "طرابلس، لبنان",
+                "sendMessage": "أرسل لنا رسالة",
+                "yourName": "اسمك",
+                "yourEmail": "بريدك الإلكتروني",
+                "yourMessage": "رسالتك",
+                "sendMessageBtn": "إرسال الرسالة",
+                "footerAbout": "جلب متعة كرة القدم الأوروبية إلى المشجعين في لبنان من خلال صناديق المفاجآت المختارة بعناية.",
+                "quickLinks": "روابط سريعة",
+                "connectWithUs": "تواصل معنا",
+                "copyright": "© 2023 صناديق المفاجآت الكروية. جميع الحقوق محفوظة.",
+                "orderSuccess": "تم الطلب بنجاح!",
+                "orderSuccessText": "شكرًا لك على طلبك. سنتواصل معك قريبًا لتأكيد التفاصيل.",
+                "close": "إغلاق"
+            };
+            
+            elementsToTranslate.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[key]) {
+                    if (element.tagName === 'INPUT' && element.type === 'text' || element.tagName === 'INPUT' && element.type === 'email' || element.tagName === 'INPUT' && element.type === 'tel' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translations[key];
+                    } else if (element.tagName === 'OPTION') {
+                        element.textContent = translations[key];
+                    } else {
+                        element.textContent = translations[key];
+                    }
+                }
+            });
+        }
+        
+        function translateToEnglish() {
+            const translations = {
+                "home": "Home",
+                "about": "About",
+                "clubs": "Clubs",
+                "shop": "Shop",
+                "contact": "Contact",
+                "heroTitle": "Discover Your Football Surprise Box",
+                "heroSubtitle": "Get official merchandise from top football clubs delivered to your doorstep in Lebanon!",
+                "orderNow": "Order Now",
+                "featuredClubs": "Featured Clubs",
+                "realMadrid": "Real Madrid",
+                "barcelona": "Barcelona",
+                "bayernMunich": "Bayern Munich",
+                "manUtd": "Manchester United",
+                "manCity": "Manchester City",
+                "liverpool": "Liverpool",
+                "arsenal": "Arsenal",
+                "aboutTitle": "About Footy Surprise Boxes",
+                "aboutText1": "We are passionate football fans who want to bring the excitement of top European clubs to fans in Lebanon. Our surprise boxes contain authentic merchandise that will delight any football enthusiast.",
+                "aboutText2": "Each box is carefully curated to include high-quality items from your favorite clubs. Whether you're treating yourself or looking for the perfect gift, our surprise boxes deliver the thrill of football right to your doorstep.",
+                "aboutFeature1": "Authentic club merchandise",
+                "aboutFeature2": "Fast delivery across Lebanon",
+                "aboutFeature3": "Cash on delivery available",
+                "shopTitle": "Choose Your Surprise Box",
+                "shopSubtitle": "Select from our three box sizes, each packed with exciting football merchandise from your favorite club.",
+                "smallBox": "Small Box",
+                "mediumBox": "Medium Box",
+                "bigBox": "Big Box",
+                "smallBoxItem1": "Official club kit",
+                "smallBoxItem2": "Club keychain",
+                "mediumBoxItem1": "Official club kit",
+                "mediumBoxItem2": "Club keychain",
+                "mediumBoxItem3": "Player poster (your choice)",
+                "bigBoxItem1": "Official club kit",
+                "bigBoxItem2": "Club keychain",
+                "bigBoxItem3": "Player poster (your choice)",
+                "bigBoxItem4": "Official club ball",
+                "bigBoxItem5": "Club scarf",
+                "selectBox": "Select",
+                "mostPopular": "Most Popular",
+                "bestValue": "Best Value",
+                "customizeBox": "Customize Your Box",
+                "selectShirt": "Select Shirt Design",
+                "selectSize": "Select Shirt Size",
+                "selectPlayer": "Select Your Favorite Player",
+                "selectBall": "Official Club Ball",
+                "clubScarf": "Club Scarf",
+                "officialBall": "Official Ball",
+                "includedInBox": "Included in Box",
+                "orderSummary": "Order Summary",
+                "basePrice": "Base Price:",
+                "vat": "VAT:",
+                "total": "Total:",
+                "proceedToOrder": "Proceed to Order",
+                "orderFormTitle": "Complete Your Order",
+                "fullName": "Full Name",
+                "phoneNumber": "Phone Number",
+                "deliveryAddress": "Delivery Address",
+                "paymentMethod": "Payment Method",
+                "cashOnDelivery": "Cash on Delivery",
+                "codNote": "Pay when you receive your order. Currently only available in Lebanon.",
+                "placeOrder": "Place Order",
+                "customerReviews": "What Our Customers Say",
+                "testimonial1": "\"The Real Madrid box exceeded my expectations! The quality of the items is amazing. Will definitely order again.\"",
+                "testimonial2": "\"Got the Barcelona box as a gift for my brother. He loved the Messi poster! Delivery was fast too.\"",
+                "testimonial3": "\"The Manchester United big box is worth every penny. The scarf is my favorite item. Highly recommended!\"",
+                "contactUs": "Contact Us",
+                "getInTouch": "Get in Touch",
+                "contactText": "Have questions about our products or need help with your order? Reach out to us and we'll get back to you as soon as possible.",
+                "emailUs": "Email Us",
+                "whatsappUs": "WhatsApp Us",
+                "location": "Location",
+                "lebanon": "Tripoli, Lebanon",
+                "sendMessage": "Send Us a Message",
+                "yourName": "Your Name",
+                "yourEmail": "Your Email",
+                "yourMessage": "Your Message",
+                "sendMessageBtn": "Send Message",
+                "footerAbout": "Bringing the excitement of European football to fans in Lebanon through curated surprise boxes.",
+                "quickLinks": "Quick Links",
+                "connectWithUs": "Connect With Us",
+                "copyright": "© 2023 Footy Surprise Boxes. All rights reserved.",
+                "orderSuccess": "Order Successful!",
+                "orderSuccessText": "Thank you for your order. We'll contact you soon to confirm the details.",
+                "close": "Close"
+            };
+            
+            elementsToTranslate.forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[key]) {
+                    if (element.tagName === 'INPUT' && element.type === 'text' || element.tagName === 'INPUT' && element.type === 'email' || element.tagName === 'INPUT' && element.type === 'tel' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = translations[key];
+                    } else if (element.tagName === 'OPTION') {
+                        element.textContent = translations[key];
+                    } else {
+                        element.textContent = translations[key];
+                    }
+                }
+            });
+        }
+        
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobileMenuButton');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuButton.addEventListener('click', function() {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Box selection functionality
+        const boxOptions = document.querySelectorAll('.box-option .btn');
+        const customizerSection = document.getElementById('customizer');
+        const orderFormContainer = document.getElementById('orderFormContainer');
+        const selectedBoxInput = document.getElementById('selectedBox');
+        const selectedClubInput = document.getElementById('selectedClub');
+        const selectedShirtInput = document.getElementById('selectedShirt');
+        const selectedSizeInput = document.getElementById('selectedSize');
+        const selectedPlayerInput = document.getElementById('selectedPlayer');
+        const basePriceElement = document.getElementById('base-price');
+        const totalPriceElement = document.getElementById('total-price');
+        const proceedToOrderButton = document.getElementById('proceed-to-order');
+        
+        // بيانات اللاعبين لكل ناد
+        const playersData = {
+            'barcelona': [
+                { id: 1, name: 'Lionel Messi', nameAr: 'ليونيل ميسي', image: 'download.jpg' },
+                { id: 2, name: 'Lamine Yamal', nameAr: 'لامين يامال', image: 'images.webp' },
+                { id: 3, name: 'Pedri', nameAr: 'بيدري', image: 'pedri.webp' },
+                { id: 4, name: 'Gavi', nameAr: 'غافي', image: 'gavi.webp' },
+                { id: 5, name: 'Lewandowski', nameAr: 'ليفاندوفسكي', image: 'lewandowski.webp' }
+            ],
+            'real-madrid': [
+                { id: 1, name: 'Cristiano Ronaldo', nameAr: 'كريستيانو رونالدو', image: 'images (1).webp' },
+                { id: 2, name: 'Kylian Mbappé', nameAr: 'كيلان مبابي', image: 'licensed-image.webp' },
+                { id: 3, name: 'Vinicius Jr', nameAr: 'فينيسيوس', image: 'licensed-image (1).webp' },
+                { id: 4, name: 'Jude Bellingham', nameAr: 'جود بيلينغهام', image: 'images (2).webp' },
+                { id: 5, name: 'Luka Modrić', nameAr: 'لوكا مودريتش', image: 'modric.jfif' }
+            ],
+            'bayern': [
+                { id: 1, name: 'Thomas Müller', nameAr: 'توماس مولر', image: 'images (6).webp' },
+                { id: 2, name: 'Harry Kane', nameAr: 'هاري كين', image: 'download.webp' },
+                { id: 3, name: 'Jamal Musiala', nameAr: 'جمال موسيلا', image: 'images (5).webp' },
+                { id: 4, name: 'Leroy Sané', nameAr: 'ليروي ساني', image: 'images (3).webp' },
+                { id: 5, name: 'Alphonso Davies', nameAr: 'ألفونسو ديفيز', image: 'images (4).webp' }
+            ],
+            'man-utd': [
+                { id: 1, name: 'Bruno Fernandes', nameAr: 'برونو فيرنانديز', image: 'bruno.webp' },
+                { id: 2, name: 'Marcus Rashford', nameAr: 'راشفورد', image: 'rashford.webp' },
+                { id: 3, name: 'Casemiro', nameAr: 'كاسيميرو', image: 'casemero.webp' },
+                { id: 4, name: 'Garnacho', nameAr: 'جارناتشو', image: 'garnacho.webp' },
+                { id: 5, name: 'Højlund', nameAr: 'هوجلاند', image: 'ho.webp' }
+            ],
+            'man-city': [
+                { id: 1, name: 'Kevin De Bruyne', nameAr: 'كيفين دي بروين', image: 'keven.webp' },
+                { id: 2, name: 'Erling Haaland', nameAr: 'إيرلينغ هالاند', image: 'erling.webp' },
+                { id: 3, name: 'Phil Foden', nameAr: 'فودان', image: 'phil.webp' },
+                { id: 4, name: 'marmoush', nameAr: 'عمر ', image: 'omar.webp' },
+                { id: 5, name: 'Rodri', nameAr: 'رودري', image: 'rodri.webp' }
+            ],
+            'liverpool': [
+                { id: 1, name: 'Steven Gerrard', nameAr: 'ستيفن جيرارد', image: 'steven.webp' },
+                { id: 2, name: 'Mohamed Salah', nameAr: 'محمد صلاح', image: 'salah.webp' },
+                { id: 3, name: 'Virgil van Dijk', nameAr: 'فيرجيل فان ديك', image: 'van.webp' },
+                { id: 4, name: 'Ekitike', nameAr: 'اكيتيكي ', image: 'ekitike.webp' },
+                { id: 5, name: 'alissom', nameAr: 'اليسون  ', image: 'alisoon.webp' }
+            ],
+            'arsenal': [
+                { id: 1, name: 'Bukayo Saka', nameAr: 'بوكايو ساكا', image: 'saka.webp' },
+                { id: 2, name: 'Martin Ødegaard', nameAr: 'مارتن أوديجارد', image: 'odi.webp' },
+                { id: 3, name: ' victor', nameAr: ' فيكتور', image: 'g.webp' },
+                { id: 4, name: 'Declan Rice', nameAr: 'ديكلان رايس', image: 'rice.webp' },
+                { id: 5, name: 'William Saliba', nameAr: 'وليام ساليبا', image: 'saliba.webp' }
+            ]
+        };
+
+        // بيانات التيشرتات لكل ناد
+        const shirtsData = {
+            'barcelona': [
+                { id: 1, name: 'Home Kit', nameAr: 'الطقم الأساسي', image: 'https://store.fcbarcelona.com/cdn/shop/files/HJ4590-456_415227879_D_A_1X1ucl.jpg?v=1751431616&width=1946' },
+                { id: 2, name: 'Away Kit', nameAr: 'الطقم الاحتياطي', image: 'https://store.fcbarcelona.com/cdn/shop/files/HJ4603-784_431735711_D_A_1X1_4ebdb94b-be58-4c4a-bceb-d3900f4fdc4f.jpg?v=1753762314&width=1946' },
+                { id: 3, name: 'Third Kit', nameAr: 'الطقم الثالث', image: 'https://www.fcbarcelona.com/photo-resources/2025/08/18/bb634e90-38c6-45fa-83d3-343aa2af014b/3a-MASCUL-_00017.jpg?height=750&width=1200' }
+            ],
+            'real-madrid': [
+                { id: 1, name: 'Home Kit', nameAr: 'الطقم الأساسي', image: 'rf.jfif' },
+                { id: 2, name: 'Away Kit', nameAr: 'الطقم الاحتياطي', image: 'rs.jfif' },
+                { id: 3, name: 'Third Kit', nameAr: 'الطقم الثالث', image: 'rt.jfif' }
+            ],
+            'bayern': [
+                { id: 1, name: 'Home Kit', nameAr: 'الطقم الأساسي', image: 'bf.jfif' },
+                { id: 2, name: 'Away Kit', nameAr: 'الطقم الاحتياطي', image: 'bs.jfif' },
+                { id: 3, name: 'Third Kit', nameAr: 'الطقم الثالث', image: 'bt.jfif' }
+            ],
+            'man-utd': [
+                { id: 1, name: 'Home Kit', nameAr: 'الطقم الأساسي', image: 'uf.jfif' },
+                { id: 2, name: 'Away Kit', nameAr: 'الطقم الاحتياطي', image: 'us.jfif' },
+                { id: 3, name: 'Third Kit', nameAr: 'الطقم الثالث', image: 'ut.jfif' }
+            ],
+            'man-city': [
+                { id: 1, name: 'Home Kit', nameAr: 'الطقم الأساسي', image: 'cf.jfif' },
+                { id: 2, name: 'Away Kit', nameAr: 'الطقم الاحتياطي', image: 'cs.jfif' },
+                { id: 3, name: 'Third Kit', nameAr: 'الطقم الثالث', image: 'ct.jfif' }
+            ],
+            'liverpool': [
+                { id: 1, name: 'Home Kit', nameAr: 'الطقم الأساسي', image: 'lf.jfif' },
+                { id: 2, name: 'Away Kit', nameAr: 'الطقم الاحتياطي', image: 'ls.jfif' },
+                { id: 3, name: 'Third Kit', nameAr: 'الطقم الثالث', image: 'lt.jfif' }
+            ],
+            'arsenal': [
+                { id: 1, name: 'Home Kit', nameAr: 'الطقم الأساسي', image: 'af.jfif' },
+                { id: 2, name: 'Away Kit', nameAr: 'الطقم الاحتياطي', image: 'as.jfif' },
+                { id: 3, name: 'Third Kit', nameAr: 'الطقم الثالث', image: 'at.jfif' }
+            ]
+        };
+
+        let selectedClub = '';
+        let selectedBoxSize = '';
+        let selectedBoxPrice = 0;
+        
+        // Club selection
+        const clubCards = document.querySelectorAll('.club-card');
+        
+        clubCards.forEach(card => {
+            card.addEventListener('click', function() {
+                selectedClub = this.getAttribute('data-club');
+                selectedClubInput.value = selectedClub;
+                
+                // Scroll to box options
+                document.getElementById('shop').scrollIntoView({behavior: 'smooth'});
+            });
+        });
+        
+        // Box selection
+        boxOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                selectedBoxSize = this.getAttribute('data-box');
+                selectedBoxInput.value = selectedBoxSize;
+                
+                // Set price based on box size
+                if (selectedBoxSize === 'small') {
+                    selectedBoxPrice = 20;
+                } else if (selectedBoxSize === 'medium') {
+                    selectedBoxPrice = 40;
+                } else if (selectedBoxSize === 'big') {
+                    selectedBoxPrice = 50;
+                }
+                
+                // Update price summary
+                basePriceElement.textContent = `$${selectedBoxPrice}`;
+                totalPriceElement.textContent = `$${selectedBoxPrice}`;
+                
+                // Show/hide customization steps based on box size
+                if (selectedBoxSize === 'small') {
+                    document.getElementById('player-step').style.display = 'none';
+                    document.getElementById('ball-step').style.display = 'none';
+                    document.getElementById('scarf-step').style.display = 'none';
+                } else if (selectedBoxSize === 'medium') {
+                    document.getElementById('player-step').style.display = 'block';
+                    document.getElementById('ball-step').style.display = 'none';
+                    document.getElementById('scarf-step').style.display = 'none';
+                    
+                    // Load players for the selected club
+                    loadPlayers(selectedClub);
+                } else {
+                    document.getElementById('player-step').style.display = 'block';
+                    document.getElementById('ball-step').style.display = 'block';
+                    document.getElementById('scarf-step').style.display = 'block';
+                    
+                    // Load players for the selected club
+                    loadPlayers(selectedClub);
+                }
+                
+                // Load shirts for the selected club
+                loadShirts(selectedClub);
+                
+                // Show customizer
+                customizerSection.style.display = 'block';
+                customizerSection.scrollIntoView({behavior: 'smooth'});
+            });
+        });
+        
+        // Size selection
+        const sizeOptions = document.querySelectorAll('[data-size]');
+        
+        sizeOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                const siblings = this.parentElement.querySelectorAll('.option-card');
+                siblings.forEach(sib => sib.classList.remove('selected'));
+                this.classList.add('selected');
+                
+                selectedSizeInput.value = this.getAttribute('data-size');
+            });
+        });
+        
+        // Proceed to order form
+        proceedToOrderButton.addEventListener('click', function() {
+            customizerSection.style.display = 'none';
+            orderFormContainer.style.display = 'block';
+            orderFormContainer.scrollIntoView({behavior: 'smooth'});
+        });
+        
+        // Load players function
+        function loadPlayers(club) {
+            const playersContainer = document.getElementById('players-container');
+            playersContainer.innerHTML = '';
+            
+            if (playersData[club]) {
+                playersData[club].forEach(player => {
+                    const playerCard = document.createElement('div');
+                    playerCard.className = 'option-card';
+                    playerCard.setAttribute('data-player', player.id);
+                    
+                    const playerName = document.documentElement.classList.contains('rtl') ? player.nameAr : player.name;
+                    
+                    playerCard.innerHTML = `
+                        <div class="option-image">
+                            <img src="${player.image}" alt="${playerName}">
+                        </div>
+                        <div class="option-name">${playerName}</div>
+                    `;
+                    
+                    playerCard.addEventListener('click', function() {
+                        const siblings = this.parentElement.querySelectorAll('.option-card');
+                        siblings.forEach(sib => sib.classList.remove('selected'));
+                        this.classList.add('selected');
+                        
+                        selectedPlayerInput.value = playerName;
+                    });
+                    
+                    playersContainer.appendChild(playerCard);
+                });
+                
+                // Select first player by default
+                if (playersContainer.firstChild) {
+                    playersContainer.firstChild.classList.add('selected');
+                    const firstPlayer = playersData[club][0];
+                    selectedPlayerInput.value = document.documentElement.classList.contains('rtl') ? firstPlayer.nameAr : firstPlayer.name;
+                }
+            }
+        }
+        
+        // Load shirts function
+        function loadShirts(club) {
+            const shirtContainer = document.getElementById('shirt-container');
+            shirtContainer.innerHTML = '';
+            
+            if (shirtsData[club]) {
+                shirtsData[club].forEach(shirt => {
+                    const shirtOption = document.createElement('div');
+                    shirtOption.className = 'shirt-option';
+                    shirtOption.setAttribute('data-shirt', shirt.id);
+                    
+                    const shirtName = document.documentElement.classList.contains('rtl') ? shirt.nameAr : shirt.name;
+                    
+                    shirtOption.innerHTML = `
+                        <div class="shirt-image">
+                            <img src="${shirt.image}" alt="${shirtName}">
+                        </div>
+                        <div class="shirt-name">${shirtName}</div>
+                    `;
+                    
+                    shirtOption.addEventListener('click', function() {
+                        const siblings = this.parentElement.querySelectorAll('.shirt-option');
+                        siblings.forEach(sib => sib.classList.remove('selected'));
+                        this.classList.add('selected');
+                        
+                        selectedShirtInput.value = shirtName;
+                    });
+                    
+                    shirtContainer.appendChild(shirtOption);
+                });
+                
+                // Select first shirt by default
+                if (shirtContainer.firstChild) {
+                    shirtContainer.firstChild.classList.add('selected');
+                    const firstShirt = shirtsData[club][0];
+                    selectedShirtInput.value = document.documentElement.classList.contains('rtl') ? firstShirt.nameAr : firstShirt.name;
+                }
+            }
+        }
+        
+        // Form submission
+        const orderForm = document.getElementById('orderForm');
+        const successModal = document.getElementById('successModal');
+        const closeModal = document.getElementById('closeModal');
+        
+        orderForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form values
+            const formData = new FormData(this);
+            const orderDetails = Object.fromEntries(formData.entries());
+            
+            // Prepare WhatsApp message
+            let whatsappMessage = `New Order:\n\n`;
+            whatsappMessage += `Name: ${orderDetails.name}\n`;
+            whatsappMessage += `Phone: ${orderDetails.phone}\n`;
+            whatsappMessage += `Address: ${orderDetails.address}\n`;
+            whatsappMessage += `Club: ${orderDetails.club}\n`;
+            whatsappMessage += `Box Type: ${orderDetails.boxType}\n`;
+            whatsappMessage += `Shirt: ${orderDetails.shirt}\n`;
+            whatsappMessage += `Size: ${orderDetails.size}\n`;
+            if (orderDetails.player) {
+                whatsappMessage += `Player Choice: ${orderDetails.player}\n`;
+            }
+            whatsappMessage += `Payment: ${orderDetails.payment}\n`;
+            whatsappMessage += `Total: $${selectedBoxPrice}\n`;
+            
+            // Encode message for URL
+            const encodedMessage = encodeURIComponent(whatsappMessage);
+            
+            // Send via WhatsApp
+            window.open(`https://wa.me/96181519094?text=${encodedMessage}`, '_blank');
+            
+            // Show success modal
+            successModal.classList.remove('hidden');
+            
+            // Reset form
+            this.reset();
+            customizerSection.style.display = 'none';
+            orderFormContainer.style.display = 'none';
+            selectedBoxInput.value = '';
+            selectedClubInput.value = '';
+            selectedShirtInput.value = '';
+            selectedSizeInput.value = '';
+            selectedPlayerInput.value = '';
+        });
+        
+        // Close modal
+        closeModal.addEventListener('click', function() {
+            successModal.classList.add('hidden');
+        });
+        
+        // Close modal when clicking outside
+        successModal.addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+            }
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu if open
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
